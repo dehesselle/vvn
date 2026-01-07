@@ -22,8 +22,11 @@ class Products:
                 self.products.append(Product(**product_json))
 
     def print_status(self, show_all: bool = False):
-        print("product                   installed       latest")
-        print("------------------------- --------------- ---------------")
-        for product in self.products:
-            if product.is_installed() or show_all:
-                product.print_status()
+        if self.products:
+            print("product                   installed       latest")
+            print("------------------------- --------------- ---------------")
+            for product in self.products:
+                if product.is_installed() or show_all:
+                    product.print_status()
+        else:
+            print(f"No products found for {platform.system()} / {platform.machine()}.")
