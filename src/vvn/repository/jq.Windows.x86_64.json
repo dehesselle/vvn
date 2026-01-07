@@ -1,0 +1,18 @@
+{
+    "github_release": {
+        "organization": "jqlang",
+        "project": "jq",
+        "artifact_pattern": "jq-windows-amd64\\.exe",
+        "version_pattern": "jq-([0-9]+\\.[0-9]+\\.[0-9]+)"
+    },
+    "release_artifact": {
+        "executables": [
+            {
+                "target_name": "jq.exe",
+                "path_in_archive": "",
+                "version_arg": "--version",
+                "version_pattern": "jq-([0-9]+\\.[0-9]+\\.[0-9]+)"
+            }
+        ]
+    }
+}
