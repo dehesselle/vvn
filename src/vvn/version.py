@@ -3,6 +3,6 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 try:
-    from vvn._version import version
+    from vvn._version import version as VERSION
 except ImportError:
-    version = "0.0.0"
+    VERSION = "0.0.0"

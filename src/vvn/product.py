@@ -1,14 +1,22 @@
-import json
-import platform
-from importlib.resources import files
+from pathlib import Path
 
 from pydantic import BaseModel
 from semver import Version
 
+from .config import ConfigSection
 from .githubrelease import GitHubRelease
 from .releaseartifact import ReleaseArtifact
 
-REPOSITORY = files("vvn.repository")
+cfg = ConfigSection("product")
+
+INSTALL_DIR = (
+    "install_dir",
+    (
+        Path.home() / ".local/bin",
+        Path.home() / ".local/bin",
+        Path.home() / "AppData/Local/bin",
+    ),
+)
 
 
 class Product(BaseModel):
@@ -17,7 +25,7 @@ class Product(BaseModel):
 
     def print_status(self):
         executable = self.release_artifact.executables[0]
-        installed_ver = executable.get_version()
+        installed_ver = executable.get_version(cfg[INSTALL_DIR])
         latest_ver = self.github_release.latest_version
         confidence = ""
 
@@ -25,31 +33,19 @@ class Product(BaseModel):
             installed_ver = Version.parse(installed_ver)
             latest_ver = Version.parse(latest_ver)
         except ValueError:
-            confidence = "(?)"
+            if (
+                installed_ver
+            ):  # Determine confidence only if we have an installed product.
+                # If we weren't able to parse the version into semver, we have
+                # low confidence.
+                confidence = "(?)"
 
         print(
-            f"{executable.target_name:25} "
+            f"{str(executable.target_name):25} "
             f"{str(installed_ver):15} {str(latest_ver):15} "
             f"{confidence}"
         )
 
-
-class Products:
-    def __init__(self):
-        self.products: list[Product] = list()
-        self._load()
-
-    def _load(self):
-        for file in REPOSITORY.iterdir():
-            if file.suffix == ".json" and all(
-                _ in file.suffixes
-                for _ in [f".{platform.system()}", f".{platform.machine()}"]
-            ):
-                product_json = json.loads(file.read_text())
-                self.products.append(Product(**product_json))
-
-    def print_status(self):
-        print("product                   installed       latest")
-        print("------------------------- --------------- ---------------")
-        for product in self.products:
-            product.print_status()
+    def is_installed(self) -> bool:
+        executable = self.release_artifact.executables[0]
+        return executable.exists(cfg[INSTALL_DIR])

@@ -6,6 +6,15 @@ from pydantic import BaseModel
 from semver import Version
 from urlpath import URL
 
+from .config import ConfigSection
+
+cfg = ConfigSection("github")
+
+PARSE_RELEASE_PAGES = (
+    "parse_release_pages",
+    2,
+)  # collect release tags from this many pages
+
 
 class GitHubRelease(BaseModel):
     organization: str
@@ -18,7 +27,7 @@ class GitHubRelease(BaseModel):
     @property
     def release_tags(self) -> list[str]:
         if not self._release_tags:  # If we haven't collected any release tags yet:
-            for page_no in range(2):  # collect from the first 2 pages
+            for page_no in range(cfg[PARSE_RELEASE_PAGES]):
                 html = requests.get(
                     f"https://github.com/{self.organization}/{self.project}/releases?page={page_no}"
                 ).content
