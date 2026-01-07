@@ -3,11 +3,12 @@ from pathlib import Path
 from pydantic import BaseModel
 from semver import Version
 
-from vvn.util.config import ConfigSection
+import vvn.config as config
+
 from .githubrelease import GitHubRelease
 from .releaseartifact import ReleaseArtifact
 
-cfg = ConfigSection("product")
+cfg = config.get_section("product")
 
 INSTALL_DIR = (
     "install_dir",

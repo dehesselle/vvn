@@ -6,9 +6,9 @@ from pydantic import BaseModel
 from semver import Version
 from urlpath import URL
 
-from vvn.util.config import ConfigSection
+import vvn.config as config
 
-cfg = ConfigSection("github")
+cfg = config.get_section("github")
 
 PARSE_RELEASE_PAGES = (
     "parse_release_pages",
