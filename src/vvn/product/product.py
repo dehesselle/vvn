@@ -26,7 +26,9 @@ class Product(BaseModel):
 
     def print_status(self):
         executable = self.release_artifact.executables[0]
-        installed_ver = executable.get_version(cfg[INSTALL_DIR])
+        installed_ver = (
+            executable.get_version(cfg[INSTALL_DIR]) if self.is_installed else ""
+        )
         latest_ver = self.github_release.latest_version
         confidence = ""
 
@@ -47,6 +49,7 @@ class Product(BaseModel):
             f"{confidence}"
         )
 
+    @property
     def is_installed(self) -> bool:
         executable = self.release_artifact.executables[0]
         return executable.exists(cfg[INSTALL_DIR])
