@@ -4,7 +4,7 @@ from importlib.resources import files
 
 from .product import Product
 
-REPOSITORY = files("vvn.repository")
+REPOSITORY = files("vvn.product.repository")
 
 
 class Products:

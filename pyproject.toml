@@ -27,4 +27,4 @@ build-backend = "hatchling.build"
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/vvn/_version.py"
+version-file = "src/vvn/util/_version.py"

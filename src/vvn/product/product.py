@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import BaseModel
 from semver import Version
 
-from .config import ConfigSection
+from vvn.util.config import ConfigSection
 from .githubrelease import GitHubRelease
 from .releaseartifact import ReleaseArtifact
 

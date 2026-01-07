@@ -1,8 +1,8 @@
 from argparse import ArgumentParser
 from enum import StrEnum
 
-from .products import Products
-from .version import VERSION
+from vvn.product import Products
+from vvn.util.version import VERSION
 
 
 class Command(StrEnum):

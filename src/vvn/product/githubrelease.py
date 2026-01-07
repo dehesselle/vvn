@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from semver import Version
 from urlpath import URL
 
-from .config import ConfigSection
+from vvn.util.config import ConfigSection
 
 cfg = ConfigSection("github")
 
